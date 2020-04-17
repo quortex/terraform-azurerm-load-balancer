@@ -157,6 +157,12 @@ variable "public_app_gateway_backend_ip_addresses" {
   default     = []
 }
 
+variable "public_app_gateway_ssl_certificate_name" {
+  type        = string
+  description = "The name of the public application gateway ssl certificate."
+  default     = "quortex-public"
+}
+
 variable "private_app_gateway_subnet_name" {
   type        = string
   description = "The name of the private application gateway dedicated subnet."
@@ -263,6 +269,12 @@ variable "private_app_gateway_backend_ip_addresses" {
   type        = list(string)
   description = "A list of IP Addresses which should be part of the private application gateway backend address pool."
   default     = []
+}
+
+variable "private_app_gateway_ssl_certificate_name" {
+  type        = string
+  description = "The name of the private application gateway ssl certificate."
+  default     = "quortex-private"
 }
 
 variable "private_app_gateway_security_group_name" {

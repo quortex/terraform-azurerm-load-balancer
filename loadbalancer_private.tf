@@ -103,7 +103,7 @@ resource "azurerm_application_gateway" "private" {
       frontend_ip_configuration_name = var.private_app_gateway_frontend_ip_config_name
       frontend_port_name             = var.private_app_gateway_frontend_port_name_https
       protocol                       = "Https"
-      ssl_certificate_name           = local.ssl_certificate_name
+      ssl_certificate_name           = var.private_app_gateway_ssl_certificate_name
     }
   }
 
@@ -138,7 +138,7 @@ resource "azurerm_application_gateway" "private" {
     for_each = var.ssl_enabled ? [null] : []
 
     content {
-      name     = local.ssl_certificate_name
+      name     = var.private_app_gateway_ssl_certificate_name
       data     = acme_certificate.certificate[0].certificate_p12
       password = random_password.password[0].result
     }

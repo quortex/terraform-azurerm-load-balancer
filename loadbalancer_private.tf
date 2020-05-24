@@ -19,7 +19,7 @@ resource "azurerm_subnet" "app_gateway_private" {
   name                 = length(var.private_app_gateway_subnet_name) > 0 ? var.private_app_gateway_subnet_name : "${var.name}-app-gw-private"
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.virtual_network
-  address_prefix       = var.private_app_gateway_address_prefix
+  address_prefixes     = [var.private_app_gateway_address_prefix]
 }
 
 # The private application gateway public IP.

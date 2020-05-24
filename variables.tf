@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+
 variable "subscription_id" {
   type        = string
   description = "The Subscription ID which should be used."
@@ -34,6 +35,11 @@ variable "resource_group_name" {
   description = "The name of the resource group in which to create resources."
 }
 
+variable "name" {
+  type        = string
+  description = "A name from which the name of the resources will be chosen. Note that each resource name can be set individually."
+}
+
 variable "service_principal_id" {
   type        = string
   description = "The Client ID of the Service Principal used for ACME DNS challenge."
@@ -52,7 +58,7 @@ variable "virtual_network" {
 variable "public_app_gateway_subnet_name" {
   type        = string
   description = "The name of the public application gateway dedicated subnet."
-  default     = "quortex-app-gw-public"
+  default     = ""
 }
 
 variable "public_app_gateway_address_prefix" {
@@ -64,7 +70,7 @@ variable "public_app_gateway_address_prefix" {
 variable "public_app_gateway_name" {
   type        = string
   description = "The name of the public application gateway."
-  default     = "quortex-public"
+  default     = ""
 }
 
 variable "public_app_gateway_min_capacity" {
@@ -82,7 +88,7 @@ variable "public_app_gateway_max_capacity" {
 variable "public_app_gateway_frontend_ip_name" {
   type        = string
   description = "The name of the public application gateway frontend IP address."
-  default     = "quortex-public"
+  default     = ""
 }
 
 variable "public_app_gateway_ip_config_name" {
@@ -166,7 +172,7 @@ variable "public_app_gateway_ssl_certificate_name" {
 variable "private_app_gateway_subnet_name" {
   type        = string
   description = "The name of the private application gateway dedicated subnet."
-  default     = "quortex-app-gw-private"
+  default     = ""
 }
 
 variable "private_app_gateway_address_prefix" {
@@ -178,7 +184,7 @@ variable "private_app_gateway_address_prefix" {
 variable "private_app_gateway_name" {
   type        = string
   description = "The name of the private application gateway."
-  default     = "quortex-private"
+  default     = ""
 }
 
 variable "private_app_gateway_min_capacity" {
@@ -196,7 +202,7 @@ variable "private_app_gateway_max_capacity" {
 variable "private_app_gateway_frontend_ip_name" {
   type        = string
   description = "The name of the private application gateway frontend IP address."
-  default     = "quortex-private"
+  default     = ""
 }
 
 variable "private_app_gateway_ip_config_name" {
@@ -280,7 +286,7 @@ variable "private_app_gateway_ssl_certificate_name" {
 variable "private_app_gateway_security_group_name" {
   type        = string
   description = "The name of the private application gateway security group."
-  default     = "quortex-private-sg"
+  default     = ""
 }
 
 variable "private_app_gateway_whitelisted_ips" {

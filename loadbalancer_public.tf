@@ -16,7 +16,7 @@
 
 # A subnet for public application gateway usage.
 resource "azurerm_subnet" "app_gateway_public" {
-  name                 = var.public_app_gateway_subnet_name
+  name                 = length(var.public_app_gateway_subnet_name) > 0 ? var.public_app_gateway_subnet_name : "${var.name}-app-gw-public"
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.virtual_network
   address_prefix       = var.public_app_gateway_address_prefix
@@ -24,7 +24,7 @@ resource "azurerm_subnet" "app_gateway_public" {
 
 # The public application gateway public IP.
 resource "azurerm_public_ip" "public" {
-  name                = var.public_app_gateway_frontend_ip_name
+  name                = length(var.public_app_gateway_frontend_ip_name) > 0 ? var.public_app_gateway_frontend_ip_name : "${var.name}-public"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"
@@ -36,7 +36,7 @@ resource "azurerm_public_ip" "public" {
 # The public application gateway.
 resource "azurerm_application_gateway" "public" {
   count               = length(var.public_app_gateway_backend_ip_addresses) > 0 ? 1 : 0
-  name                = var.public_app_gateway_name
+  name                = length(var.public_app_gateway_name) > 0 ? var.public_app_gateway_name : "${var.name}-public"
   resource_group_name = var.resource_group_name
   location            = var.location
 

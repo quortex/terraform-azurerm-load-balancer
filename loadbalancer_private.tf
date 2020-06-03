@@ -16,15 +16,15 @@
 
 # A subnet for private application gateway usage.
 resource "azurerm_subnet" "app_gateway_private" {
-  name                 = var.private_app_gateway_subnet_name
+  name                 = length(var.private_app_gateway_subnet_name) > 0 ? var.private_app_gateway_subnet_name : "${var.name}-app-gw-private"
   resource_group_name  = var.resource_group_name
   virtual_network_name = var.virtual_network
-  address_prefix       = var.private_app_gateway_address_prefix
+  address_prefixes     = [var.private_app_gateway_address_prefix]
 }
 
 # The private application gateway public IP.
 resource "azurerm_public_ip" "private" {
-  name                = var.private_app_gateway_frontend_ip_name
+  name                = length(var.private_app_gateway_frontend_ip_name) > 0 ? var.private_app_gateway_frontend_ip_name : "${var.name}-private"
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"
@@ -36,7 +36,7 @@ resource "azurerm_public_ip" "private" {
 # The private application gateway.
 resource "azurerm_application_gateway" "private" {
   count               = length(var.private_app_gateway_backend_ip_addresses) > 0 ? 1 : 0
-  name                = var.private_app_gateway_name
+  name                = length(var.private_app_gateway_name) > 0 ? var.private_app_gateway_name : "${var.name}-private"
   resource_group_name = var.resource_group_name
   location            = var.location
 
@@ -187,7 +187,7 @@ resource "azurerm_subnet_network_security_group_association" "private" {
 
 # Manages a network security group that contains a list of network security rules asssociated to private AppGateway.
 resource "azurerm_network_security_group" "private" {
-  name                = var.private_app_gateway_security_group_name
+  name                = length(var.private_app_gateway_security_group_name) > 0 ? var.private_app_gateway_security_group_name : "${var.name}-private-sg"
   location            = var.location
   resource_group_name = var.resource_group_name
 

@@ -23,3 +23,13 @@ output "dns_records_private" {
   value       = local.private_domains
   description = "A map with dns records in given dns zone for each dns_records_private provided in variables."
 }
+
+output "app_gateway_public_ip" {
+  value       = azurerm_public_ip.public.ip_address
+  description = "The public application gateway ip address."
+}
+
+output "app_gateway_private_ip" {
+  value       = azurerm_public_ip.private.ip_address
+  description = "The private application gateway ip address."
+}

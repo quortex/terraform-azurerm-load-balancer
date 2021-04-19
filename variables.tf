@@ -330,12 +330,6 @@ variable "ssl_acme_registration_email_address" {
   default     = ""
 }
 
-variable "ssl_acme_server_url" {
-  type        = string
-  description = "The ACME provider server URL. Use https://acme-staging-v02.api.letsencrypt.org/directory for staging and https://acme-v02.api.letsencrypt.org/directory for production."
-  default     = "https://acme-v02.api.letsencrypt.org/directory"
-}
-
 variable "tags" {
   type        = map
   description = "Tags to apply to resources. A list of key->value pairs."

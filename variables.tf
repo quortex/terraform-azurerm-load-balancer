@@ -64,7 +64,7 @@ variable "public_app_gateway_subnet_name" {
 variable "public_app_gateway_address_prefix" {
   type        = string
   description = "The public application gateway subnet address space CIDR."
-  default     = "15.1.0.0/16"
+  default     = "10.1.0.0/16"
 }
 
 variable "public_app_gateway_name" {
@@ -178,7 +178,7 @@ variable "private_app_gateway_subnet_name" {
 variable "private_app_gateway_address_prefix" {
   type        = string
   description = "The private application gateway subnet address space CIDR."
-  default     = "15.2.0.0/16"
+  default     = "10.2.0.0/16"
 }
 
 variable "private_app_gateway_name" {
@@ -331,7 +331,7 @@ variable "ssl_acme_registration_email_address" {
 }
 
 variable "tags" {
-  type        = map
+  type        = map(any)
   description = "Tags to apply to resources. A list of key->value pairs."
   default     = {}
 }

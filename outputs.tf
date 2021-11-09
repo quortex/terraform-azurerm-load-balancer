@@ -33,3 +33,8 @@ output "app_gateway_private_ip" {
   value       = azurerm_public_ip.private.ip_address
   description = "The private application gateway ip address."
 }
+
+output "nsg_name" {
+  value       = azurerm_network_security_group.private.name
+  description = "The private Network Security Group name."
+}

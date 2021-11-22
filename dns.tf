@@ -27,7 +27,7 @@ resource "azurerm_dns_a_record" "external" {
 
   name                = each.value
   zone_name           = var.dns_managed_zone
-  resource_group_name = var.resource_group_name
+  resource_group_name = length(var.dns_resource_group_name) > 0 ? var.dns_resource_group_name : var.resource_group_name
   ttl                 = 300
   records             = [azurerm_public_ip.public.ip_address]
 
@@ -40,7 +40,7 @@ resource "azurerm_dns_a_record" "internal" {
 
   name                = each.value
   zone_name           = var.dns_managed_zone
-  resource_group_name = var.resource_group_name
+  resource_group_name = length(var.dns_resource_group_name) > 0 ? var.dns_resource_group_name : var.resource_group_name
   ttl                 = 300
   records             = [azurerm_public_ip.private.ip_address]
 

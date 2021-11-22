@@ -35,6 +35,12 @@ variable "resource_group_name" {
   description = "The name of the resource group in which to create resources."
 }
 
+variable "dns_resource_group_name" {
+  type        = string
+  default     = ""
+  description = "The name of the resource group in which to create A records, if different."
+}
+
 variable "name" {
   type        = string
   description = "A name from which the name of the resources will be chosen. Note that each resource name can be set individually."
@@ -331,7 +337,7 @@ variable "ssl_acme_registration_email_address" {
 }
 
 variable "tags" {
-  type        = map
+  type        = map(any)
   description = "Tags to apply to resources. A list of key->value pairs."
   default     = {}
 }

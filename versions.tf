@@ -20,10 +20,10 @@ terraform {
   required_providers {
     azurerm = ">= 2.8"
     acme = {
-      source = "vancluever/acme"
+      source  = "vancluever/acme"
       version = "~> 2.0"
     }
-    tls     = ">= 2"
-    random  = ">= 2"
+    tls    = ">= 2"
+    random = ">= 2"
   }
 }

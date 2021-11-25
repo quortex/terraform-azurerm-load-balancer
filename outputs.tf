@@ -33,3 +33,20 @@ output "app_gateway_private_ip" {
   value       = azurerm_public_ip.private.ip_address
   description = "The private application gateway ip address."
 }
+
+output "ssl_certificate_common_name" {
+  value       = try(acme_certificate.certificate.0.common_name, "")
+  description = "The certificate's common name, the primary domain that the certificate will be recognized for."
+}
+
+output "ssl_certificate_pem" {
+  value       = try(acme_certificate.certificate.0.certificate_pem, "")
+  description = "The certificate in PEM format. This does not include the issuer_pem. This certificate can be concatenated with issuer_pem to form a full chain."
+  sensitive   = true
+}
+
+output "ssl_issuer_pem" {
+  value       = try(acme_certificate.certificate.0.issuer_pem, "")
+  description = "The intermediate certificates of the issuer. Multiple certificates are concatenated in this field when there is more than one intermediate certificate in the chain."
+  sensitive   = true
+}

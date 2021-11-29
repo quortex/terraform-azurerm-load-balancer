@@ -44,7 +44,7 @@ resource "acme_certificate" "certificate" {
     config = {
       AZURE_CLIENT_ID           = var.service_principal_id
       AZURE_CLIENT_SECRET       = var.service_principal_secret
-      AZURE_RESOURCE_GROUP      = var.resource_group_name
+      AZURE_RESOURCE_GROUP      = length(var.dns_resource_group_name) > 0 ? var.dns_resource_group_name : var.resource_group_name
       AZURE_SUBSCRIPTION_ID     = var.subscription_id
       AZURE_TENANT_ID           = var.tenant_id
       AZURE_PROPAGATION_TIMEOUT = 600

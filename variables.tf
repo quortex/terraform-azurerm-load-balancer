@@ -338,7 +338,7 @@ variable "ssl_acme_registration_email_address" {
 
 variable "ssl_certificate_p12" {
   type        = string
-  description = "The SSL certificate PKCS12 format, base64 encoded, if you don't want the module to create it, you must also provide its password if any."
+  description = "The SSL certificate PKCS12 format, base64 encoded, if you don't want the module to create it. You must also provide its password if any."
   default     = ""
 }
 

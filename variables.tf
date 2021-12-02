@@ -326,13 +326,25 @@ variable "ssl_enabled" {
 
 variable "ssl_certificate_common_name" {
   type        = string
-  description = "The SSL certificate common name. Required if ssl_enabled."
+  description = "The SSL certificate common name. Required if ssl_enabled and ssl_certificate_p12 not provided."
   default     = ""
 }
 
 variable "ssl_acme_registration_email_address" {
   type        = string
-  description = "The ACME registration email address. Required if ssl_enabled."
+  description = "The ACME registration email address. Required if ssl_enabled and ssl_certificate_p12 not provided."
+  default     = ""
+}
+
+variable "ssl_certificate_p12" {
+  type        = string
+  description = "The SSL certificate PKCS12 format, base64 encoded, if you don't want the module to create it. You must also provide its password if any."
+  default     = ""
+}
+
+variable "ssl_certificate_password" {
+  type        = string
+  description = "The SSL certificate password."
   default     = ""
 }
 

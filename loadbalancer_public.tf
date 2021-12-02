@@ -139,8 +139,8 @@ resource "azurerm_application_gateway" "public" {
 
     content {
       name     = var.public_app_gateway_ssl_certificate_name
-      data     = acme_certificate.certificate[0].certificate_p12
-      password = random_password.password[0].result
+      data     = local.create_ssl_certificate ? acme_certificate.certificate[0].certificate_p12 : var.ssl_certificate_p12
+      password = local.create_ssl_certificate ? random_password.password[0].result : var.ssl_certificate_password
     }
   }
 

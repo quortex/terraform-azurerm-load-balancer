@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-# Locals block for DNS management.
-locals {
-  private_domains = { for k, v in azurerm_dns_a_record.internal : k => "${v.name}.${var.dns_managed_zone}" }
-  public_domains  = { for k, v in azurerm_dns_a_record.external : k => "${v.name}.${var.dns_managed_zone}" }
-  all_domains     = concat(values(local.private_domains), values(local.public_domains))
-}
-
 # A list of DNS records for external (aka public) purpose.
 resource "azurerm_dns_a_record" "external" {
   for_each = var.dns_records_public

@@ -15,8 +15,9 @@
  */
 
 # Generates a secure private key and encodes it as PEM.
+
 resource "tls_private_key" "private_key" {
-  count = var.ssl_enabled ? 1 : 0
+  count = var.ssl_enabled && local.create_ssl_certificate ? 1 : 0
 
   algorithm = "RSA"
 }
@@ -24,7 +25,7 @@ resource "tls_private_key" "private_key" {
 # The acme_registration resource can be used to create and manage accounts on an ACME server.
 # Once registered, the same private key that has been used for registration can be used to request authorizations for certificates.
 resource "acme_registration" "reg" {
-  count = var.ssl_enabled ? 1 : 0
+  count = var.ssl_enabled && local.create_ssl_certificate ? 1 : 0
 
   account_key_pem = tls_private_key.private_key[0].private_key_pem
   email_address   = var.ssl_acme_registration_email_address
@@ -32,7 +33,7 @@ resource "acme_registration" "reg" {
 
 # Manage an ACME TLS certificate for all endpoints..
 resource "acme_certificate" "certificate" {
-  count = var.ssl_enabled ? 1 : 0
+  count = var.ssl_enabled && local.create_ssl_certificate ? 1 : 0
 
   account_key_pem           = acme_registration.reg[0].account_key_pem
   common_name               = var.ssl_certificate_common_name
@@ -53,7 +54,7 @@ resource "acme_certificate" "certificate" {
 }
 
 resource "random_password" "password" {
-  count = var.ssl_enabled ? 1 : 0
+  count = var.ssl_enabled && local.create_ssl_certificate ? 1 : 0
 
   length  = 16
   special = true

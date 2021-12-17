@@ -145,6 +145,12 @@ variable "public_app_gateway_request_routing_rule_https_name_prefix" {
   default     = "quortex-public-rqrt-https"
 }
 
+variable "public_app_gateway_backend_host_name" {
+  type        = string
+  description = "Host header to be sent to the public application gateway backend servers."
+  default     = null
+}
+
 variable "public_app_gateway_backend_address_pool_name" {
   type        = string
   description = "The name of the public application gateway backend address pool."
@@ -259,6 +265,12 @@ variable "private_app_gateway_request_routing_rule_https_name_prefix" {
   default     = "quortex-private-rqrt-https"
 }
 
+variable "private_app_gateway_backend_host_name" {
+  type        = string
+  description = "Host header to be sent to the private application gateway backend servers."
+  default     = null
+}
+
 variable "private_app_gateway_backend_address_pool_name" {
   type        = string
   description = "The name of the private application gateway backend address pool."
@@ -312,10 +324,22 @@ variable "dns_records_private" {
   default     = {}
 }
 
+variable "additional_dns_records_private" {
+  type        = list(string)
+  description = "A list with additional dns records to add for private endpoints."
+  default     = []
+}
+
 variable "dns_records_public" {
   type        = map(string)
   description = "A map with dns records to add in dns_managed_zone for public endpoints set as value. Full domain names will be exported in a map for the given key."
   default     = {}
+}
+
+variable "additional_dns_records_public" {
+  type        = list(string)
+  description = "A list with additional dns records to add for public endpoints."
+  default     = []
 }
 
 variable "ssl_enabled" {

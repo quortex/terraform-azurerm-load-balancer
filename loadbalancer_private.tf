@@ -92,6 +92,17 @@ resource "azurerm_application_gateway" "private" {
       protocol                       = "Http"
     }
   }
+  dynamic "http_listener" {
+    for_each = var.additional_dns_records_private
+
+    content {
+      name                           = "${var.private_app_gateway_http_listener_name_prefix}-add${http_listener.key}"
+      host_name                      = http_listener.value
+      frontend_ip_configuration_name = var.private_app_gateway_frontend_ip_config_name
+      frontend_port_name             = var.private_app_gateway_frontend_port_name_http
+      protocol                       = "Http"
+    }
+  }
 
   # HTTPS listeners
   dynamic "http_listener" {
@@ -100,6 +111,18 @@ resource "azurerm_application_gateway" "private" {
     content {
       name                           = "${var.private_app_gateway_https_listener_name_prefix}-${http_listener.key}"
       host_name                      = "${http_listener.value}.${var.dns_managed_zone}"
+      frontend_ip_configuration_name = var.private_app_gateway_frontend_ip_config_name
+      frontend_port_name             = var.private_app_gateway_frontend_port_name_https
+      protocol                       = "Https"
+      ssl_certificate_name           = var.private_app_gateway_ssl_certificate_name
+    }
+  }
+  dynamic "http_listener" {
+    for_each = var.ssl_enabled ? var.additional_dns_records_private : []
+
+    content {
+      name                           = "${var.private_app_gateway_https_listener_name_prefix}-add${http_listener.key}"
+      host_name                      = http_listener.value
       frontend_ip_configuration_name = var.private_app_gateway_frontend_ip_config_name
       frontend_port_name             = var.private_app_gateway_frontend_port_name_https
       protocol                       = "Https"
@@ -119,6 +142,17 @@ resource "azurerm_application_gateway" "private" {
       backend_http_settings_name = var.private_app_gateway_http_setting_name
     }
   }
+  dynamic "request_routing_rule" {
+    for_each = var.additional_dns_records_private
+
+    content {
+      name                       = "${var.private_app_gateway_request_routing_rule_http_name_prefix}-add${request_routing_rule.key}"
+      rule_type                  = "Basic"
+      http_listener_name         = "${var.private_app_gateway_http_listener_name_prefix}-add${request_routing_rule.key}"
+      backend_address_pool_name  = var.private_app_gateway_backend_address_pool_name
+      backend_http_settings_name = var.private_app_gateway_http_setting_name
+    }
+  }
 
   # Routing rules for HTTPS listeners.
   dynamic "request_routing_rule" {
@@ -128,6 +162,17 @@ resource "azurerm_application_gateway" "private" {
       name                       = "${var.private_app_gateway_request_routing_rule_https_name_prefix}-${request_routing_rule.key}"
       rule_type                  = "Basic"
       http_listener_name         = "${var.private_app_gateway_https_listener_name_prefix}-${request_routing_rule.key}"
+      backend_address_pool_name  = var.private_app_gateway_backend_address_pool_name
+      backend_http_settings_name = var.private_app_gateway_http_setting_name
+    }
+  }
+    dynamic "request_routing_rule" {
+    for_each = var.ssl_enabled ? var.additional_dns_records_private : []
+
+    content {
+      name                       = "${var.private_app_gateway_request_routing_rule_https_name_prefix}-add${request_routing_rule.key}"
+      rule_type                  = "Basic"
+      http_listener_name         = "${var.private_app_gateway_https_listener_name_prefix}-add${request_routing_rule.key}"
       backend_address_pool_name  = var.private_app_gateway_backend_address_pool_name
       backend_http_settings_name = var.private_app_gateway_http_setting_name
     }
@@ -154,6 +199,7 @@ resource "azurerm_application_gateway" "private" {
   # SSL termination is done at app gateway level.
   backend_http_settings {
     name                  = var.private_app_gateway_http_setting_name
+    host_name             = var.private_app_gateway_backend_host_name
     cookie_based_affinity = "Disabled"
     port                  = 80
     protocol              = "Http"

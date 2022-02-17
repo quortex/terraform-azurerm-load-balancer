@@ -88,7 +88,7 @@ variable "public_app_gateway_min_capacity" {
 variable "public_app_gateway_max_capacity" {
   type        = number
   description = "The public application gateway maximum capacity for autoscaling. Accepted values are in the range 2 to 125."
-  default     = 2
+  default     = 20
 }
 
 variable "public_app_gateway_frontend_ip_name" {
@@ -208,7 +208,7 @@ variable "private_app_gateway_min_capacity" {
 variable "private_app_gateway_max_capacity" {
   type        = number
   description = "The private application gateway maximum capacity for autoscaling. Accepted values are in the range 2 to 125."
-  default     = 2
+  default     = 20
 }
 
 variable "private_app_gateway_frontend_ip_name" {

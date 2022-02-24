@@ -348,6 +348,12 @@ variable "ssl_enabled" {
   default     = false
 }
 
+variable "ssl_termination" {
+  type        = bool
+  description = "Wether to do SSL termination at AppGateway level (else it will forward SSL to cluster)."
+  default     = true
+}
+
 variable "ssl_certificate_common_name" {
   type        = string
   description = "The SSL certificate common name. Required if ssl_enabled and ssl_certificate_p12 not provided."

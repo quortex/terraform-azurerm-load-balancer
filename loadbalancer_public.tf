@@ -114,7 +114,7 @@ resource "azurerm_application_gateway" "public" {
       frontend_ip_configuration_name = var.public_app_gateway_frontend_ip_config_name
       frontend_port_name             = var.public_app_gateway_frontend_port_name_https
       protocol                       = "Https"
-      ssl_certificate_name           = var.public_app_gateway_ssl_certificate_name
+      ssl_certificate_name           = var.ssl_termination ? var.public_app_gateway_ssl_certificate_name : null
     }
   }
   dynamic "http_listener" {
@@ -126,7 +126,7 @@ resource "azurerm_application_gateway" "public" {
       frontend_ip_configuration_name = var.public_app_gateway_frontend_ip_config_name
       frontend_port_name             = var.public_app_gateway_frontend_port_name_https
       protocol                       = "Https"
-      ssl_certificate_name           = var.public_app_gateway_ssl_certificate_name
+      ssl_certificate_name           = var.ssl_termination ? var.public_app_gateway_ssl_certificate_name : null
     }
   }
 
@@ -180,7 +180,7 @@ resource "azurerm_application_gateway" "public" {
 
   # Public App Gateway SSL certificate management.
   dynamic "ssl_certificate" {
-    for_each = var.ssl_enabled ? [null] : []
+    for_each = var.ssl_enabled && var.ssl_termination ? [null] : []
 
     content {
       name     = var.public_app_gateway_ssl_certificate_name
@@ -195,14 +195,13 @@ resource "azurerm_application_gateway" "public" {
     ip_addresses = var.public_app_gateway_backend_ip_addresses
   }
 
-  # Backend http settings as HTTP.
-  # SSL termination is done at app gateway level.
+  # Backend http settings as HTTP
   backend_http_settings {
     name                  = var.public_app_gateway_http_setting_name
     host_name             = var.public_app_gateway_backend_host_name
     cookie_based_affinity = "Disabled"
-    port                  = 80
-    protocol              = "Http"
+    port                  = var.ssl_enabled && var.ssl_termination ? 443 : 80
+    protocol              = var.ssl_enabled && var.ssl_termination ? "Http" : "Https"
     request_timeout       = 10
     probe_name            = var.public_app_gateway_hc_probe_name
   }

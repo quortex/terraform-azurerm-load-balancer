@@ -114,7 +114,7 @@ resource "azurerm_application_gateway" "private" {
       frontend_ip_configuration_name = var.private_app_gateway_frontend_ip_config_name
       frontend_port_name             = var.private_app_gateway_frontend_port_name_https
       protocol                       = "Https"
-      ssl_certificate_name           = var.private_app_gateway_ssl_certificate_name
+      ssl_certificate_name           = var.ssl_termination ? var.private_app_gateway_ssl_certificate_name : null
     }
   }
   dynamic "http_listener" {
@@ -126,7 +126,7 @@ resource "azurerm_application_gateway" "private" {
       frontend_ip_configuration_name = var.private_app_gateway_frontend_ip_config_name
       frontend_port_name             = var.private_app_gateway_frontend_port_name_https
       protocol                       = "Https"
-      ssl_certificate_name           = var.private_app_gateway_ssl_certificate_name
+      ssl_certificate_name           = var.ssl_termination ? var.private_app_gateway_ssl_certificate_name : null
     }
   }
 
@@ -166,7 +166,7 @@ resource "azurerm_application_gateway" "private" {
       backend_http_settings_name = var.private_app_gateway_http_setting_name
     }
   }
-    dynamic "request_routing_rule" {
+  dynamic "request_routing_rule" {
     for_each = var.ssl_enabled ? var.additional_dns_records_private : []
 
     content {
@@ -180,7 +180,7 @@ resource "azurerm_application_gateway" "private" {
 
   # Private App Gateway SSL certificate management.
   dynamic "ssl_certificate" {
-    for_each = var.ssl_enabled ? [null] : []
+    for_each = var.ssl_enabled && var.ssl_termination ? [null] : []
 
     content {
       name     = var.private_app_gateway_ssl_certificate_name
@@ -201,8 +201,8 @@ resource "azurerm_application_gateway" "private" {
     name                  = var.private_app_gateway_http_setting_name
     host_name             = var.private_app_gateway_backend_host_name
     cookie_based_affinity = "Disabled"
-    port                  = 80
-    protocol              = "Http"
+    port                  = var.ssl_enabled && var.ssl_termination ? 443 : 80
+    protocol              = var.ssl_enabled && var.ssl_termination ? "Http" : "Https"
     request_timeout       = 10
     probe_name            = var.private_app_gateway_hc_probe_name
   }

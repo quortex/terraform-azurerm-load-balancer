@@ -211,6 +211,7 @@ resource "azurerm_application_gateway" "public" {
   probe {
     name                = var.public_app_gateway_hc_probe_name
     host                = "127.0.0.1"
+    port                = var.public_app_gateway_hc_probe_port
     interval            = 5
     protocol            = "Http"
     path                = "/ping/"

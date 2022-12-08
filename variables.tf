@@ -169,6 +169,11 @@ variable "public_app_gateway_hc_probe_name" {
   default     = "quortex-public-probe"
 }
 
+variable "public_app_gateway_hc_probe_port" {
+  type        = number
+  description = "(Optional) Custom port which will be used for probing the backend servers. The valid value ranges from 1 to 65535. In case not set, port from HTTP settings will be used. This property is valid for Standard_v2 and WAF_v2 only."
+}
+
 variable "public_app_gateway_backend_ip_addresses" {
   type        = list(string)
   description = "A list of IP Addresses which should be part of the public application gateway backend address pool."
@@ -287,6 +292,11 @@ variable "private_app_gateway_hc_probe_name" {
   type        = string
   description = "The name of the private application gateway healtch check probe."
   default     = "quortex-private-probe"
+}
+
+variable "private_app_gateway_hc_probe_port" {
+  type        = number
+  description = "(Optional) Custom port which will be used for probing the backend servers. The valid value ranges from 1 to 65535. In case not set, port from HTTP settings will be used. This property is valid for Standard_v2 and WAF_v2 only."
 }
 
 variable "private_app_gateway_backend_ip_addresses" {

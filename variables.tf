@@ -171,7 +171,7 @@ variable "public_app_gateway_hc_probe_name" {
 
 variable "public_app_gateway_hc_probe_port" {
   type        = number
-  description = "(Optional) Custom port which will be used for probing the backend servers. The valid value ranges from 1 to 65535. In case not set, port from HTTP settings will be used. This property is valid for Standard_v2 and WAF_v2 only."
+  description = "Custom port which will be used for probing the public backend. The valid value ranges from 1 to 65535. In case not set, port from HTTP settings will be used."
   default     = null
 }
 
@@ -297,7 +297,7 @@ variable "private_app_gateway_hc_probe_name" {
 
 variable "private_app_gateway_hc_probe_port" {
   type        = number
-  description = "(Optional) Custom port which will be used for probing the backend servers. The valid value ranges from 1 to 65535. In case not set, port from HTTP settings will be used. This property is valid for Standard_v2 and WAF_v2 only."
+  description = "Custom port which will be used for probing the private backend. The valid value ranges from 1 to 65535. In case not set, port from HTTP settings will be used."
   default     = null
 }
 

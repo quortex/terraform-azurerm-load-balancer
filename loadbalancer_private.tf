@@ -166,7 +166,7 @@ resource "azurerm_application_gateway" "private" {
       backend_http_settings_name = var.private_app_gateway_http_setting_name
     }
   }
-    dynamic "request_routing_rule" {
+  dynamic "request_routing_rule" {
     for_each = var.ssl_enabled ? var.additional_dns_records_private : []
 
     content {
@@ -211,6 +211,7 @@ resource "azurerm_application_gateway" "private" {
   probe {
     name                = var.private_app_gateway_hc_probe_name
     host                = "127.0.0.1"
+    port                = var.private_app_gateway_hc_probe_port
     interval            = 5
     protocol            = "Http"
     path                = "/ping/"

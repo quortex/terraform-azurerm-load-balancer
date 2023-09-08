@@ -29,8 +29,8 @@ resource "azurerm_public_ip" "private" {
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"
   sku                 = "Standard"
-
-  tags = var.tags
+  zones               = length(var.public_ip_zones) == 0 ? [1] : var.public_ip_zones
+  tags                = var.tags
 }
 
 # The private application gateway.
@@ -217,6 +217,9 @@ resource "azurerm_application_gateway" "private" {
     path                = "/ping/"
     timeout             = 2
     unhealthy_threshold = 2
+    match {
+      status_code = var.status_code_range
+    }
   }
 
   tags = var.tags

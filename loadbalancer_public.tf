@@ -141,6 +141,7 @@ resource "azurerm_application_gateway" "public" {
       http_listener_name         = "${var.public_app_gateway_http_listener_name_prefix}-${request_routing_rule.key}"
       backend_address_pool_name  = var.public_app_gateway_backend_address_pool_name
       backend_http_settings_name = var.public_app_gateway_http_setting_name
+      priority                   = index(keys(var.dns_records_public), request_routing_rule.key) + 100
     }
   }
   dynamic "request_routing_rule" {
@@ -152,6 +153,8 @@ resource "azurerm_application_gateway" "public" {
       http_listener_name         = "${var.public_app_gateway_http_listener_name_prefix}-add${request_routing_rule.key}"
       backend_address_pool_name  = var.public_app_gateway_backend_address_pool_name
       backend_http_settings_name = var.public_app_gateway_http_setting_name
+      priority                   = contains(var.additional_dns_records_public, request_routing_rule.key) ? index(var.additional_dns_records_public, request_routing_rule.key) + 200 : 1000
+
     }
   }
 
@@ -165,6 +168,7 @@ resource "azurerm_application_gateway" "public" {
       http_listener_name         = "${var.public_app_gateway_https_listener_name_prefix}-${request_routing_rule.key}"
       backend_address_pool_name  = var.public_app_gateway_backend_address_pool_name
       backend_http_settings_name = var.public_app_gateway_http_setting_name
+      priority                   = index(keys(var.dns_records_public), request_routing_rule.key) + 300
     }
   }
   dynamic "request_routing_rule" {
@@ -176,6 +180,7 @@ resource "azurerm_application_gateway" "public" {
       http_listener_name         = "${var.public_app_gateway_https_listener_name_prefix}-add${request_routing_rule.key}"
       backend_address_pool_name  = var.public_app_gateway_backend_address_pool_name
       backend_http_settings_name = var.public_app_gateway_http_setting_name
+      priority                   = contains(var.additional_dns_records_public, request_routing_rule.key) ? index(var.additional_dns_records_public, request_routing_rule.key) + 400 : 2000
     }
   }
 

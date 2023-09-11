@@ -398,4 +398,5 @@ variable "public_ip_zones" {
 variable "status_code_range" {
   type        = list(string)
   description = "A list of HTTP status code ranges to match (optional)"
+  default     = ["200-399"]
 }

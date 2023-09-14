@@ -18,7 +18,7 @@ terraform {
   required_version = ">= 0.12"
 
   required_providers {
-    azurerm = ">= 2.8"
+    azurerm = ">= 3.0.0"
     acme = {
       source  = "vancluever/acme"
       version = "~> 2.0"

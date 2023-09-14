@@ -29,8 +29,8 @@ resource "azurerm_public_ip" "private" {
   resource_group_name = var.resource_group_name
   allocation_method   = "Static"
   sku                 = "Standard"
-
-  tags = var.tags
+  zones               = length(var.public_ip_zones) == 0 ? [1] : var.public_ip_zones
+  tags                = var.tags
 }
 
 # The private application gateway.
@@ -140,6 +140,7 @@ resource "azurerm_application_gateway" "private" {
       http_listener_name         = "${var.private_app_gateway_http_listener_name_prefix}-${request_routing_rule.key}"
       backend_address_pool_name  = var.private_app_gateway_backend_address_pool_name
       backend_http_settings_name = var.private_app_gateway_http_setting_name
+      priority                   = index(keys(var.dns_records_private), request_routing_rule.key) + 100
     }
   }
   dynamic "request_routing_rule" {
@@ -151,6 +152,7 @@ resource "azurerm_application_gateway" "private" {
       http_listener_name         = "${var.private_app_gateway_http_listener_name_prefix}-add${request_routing_rule.key}"
       backend_address_pool_name  = var.private_app_gateway_backend_address_pool_name
       backend_http_settings_name = var.private_app_gateway_http_setting_name
+      priority                   = index(keys(var.additional_dns_records_private), request_routing_rule.key) + 200
     }
   }
 
@@ -164,6 +166,7 @@ resource "azurerm_application_gateway" "private" {
       http_listener_name         = "${var.private_app_gateway_https_listener_name_prefix}-${request_routing_rule.key}"
       backend_address_pool_name  = var.private_app_gateway_backend_address_pool_name
       backend_http_settings_name = var.private_app_gateway_http_setting_name
+      priority                   = index(keys(var.dns_records_private), request_routing_rule.key) + 300
     }
   }
   dynamic "request_routing_rule" {
@@ -175,6 +178,7 @@ resource "azurerm_application_gateway" "private" {
       http_listener_name         = "${var.private_app_gateway_https_listener_name_prefix}-add${request_routing_rule.key}"
       backend_address_pool_name  = var.private_app_gateway_backend_address_pool_name
       backend_http_settings_name = var.private_app_gateway_http_setting_name
+      priority                   = index(keys(var.additional_dns_records_private), request_routing_rule.key) + 400
     }
   }
 
@@ -217,6 +221,9 @@ resource "azurerm_application_gateway" "private" {
     path                = "/ping/"
     timeout             = 2
     unhealthy_threshold = 2
+    match {
+      status_code = var.status_code_range
+    }
   }
 
   tags = var.tags

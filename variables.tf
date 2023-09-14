@@ -392,7 +392,7 @@ variable "tags" {
 
 variable "public_ip_zones" {
   type        = list(string)
-  description = " (Optional) A collection containing the availability zone to allocate the Public IP in. Changing this forces a new resource to be created"
+  description = "A collection containing the availability zone to allocate the Public IP in. Changing this forces a new resource to be created"
   default     = [1]
 }
 

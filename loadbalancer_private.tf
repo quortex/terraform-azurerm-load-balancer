@@ -152,7 +152,7 @@ resource "azurerm_application_gateway" "private" {
       http_listener_name         = "${var.private_app_gateway_http_listener_name_prefix}-add${request_routing_rule.key}"
       backend_address_pool_name  = var.private_app_gateway_backend_address_pool_name
       backend_http_settings_name = var.private_app_gateway_http_setting_name
-      priority                   = contains(var.additional_dns_records_private, request_routing_rule.key) ? index(var.additional_dns_records_private, request_routing_rule.key) + 200 : 1000
+      priority                   = index(keys(var.additional_dns_records_private), request_routing_rule.key) + 200
     }
   }
 
@@ -178,7 +178,7 @@ resource "azurerm_application_gateway" "private" {
       http_listener_name         = "${var.private_app_gateway_https_listener_name_prefix}-add${request_routing_rule.key}"
       backend_address_pool_name  = var.private_app_gateway_backend_address_pool_name
       backend_http_settings_name = var.private_app_gateway_http_setting_name
-      priority                   = contains(var.additional_dns_records_public, request_routing_rule.key) ? index(var.additional_dns_records_public, request_routing_rule.key) + 400 : 2000
+      priority                   = index(keys(var.additional_dns_records_private), request_routing_rule.key) + 400
     }
   }
 

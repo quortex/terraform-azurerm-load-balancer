@@ -401,3 +401,9 @@ variable "status_code_range" {
   description = "A list of HTTP status code ranges to match (optional)"
   default     = ["200-399"]
 }
+
+variable "private_endpoint_network_policies" {
+  type        = string
+  description = "Enable or Disable network policies for the private endpoint on the subnet. Possible values are Disabled, Enabled, NetworkSecurityGroupEnabled and RouteTableEnabled. Defaults to Enabled to keep same value as before introducing this paramater"
+  default     = "Enabled"
+}

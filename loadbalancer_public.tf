@@ -16,10 +16,11 @@
 
 # A subnet for public application gateway usage.
 resource "azurerm_subnet" "app_gateway_public" {
-  name                 = length(var.public_app_gateway_subnet_name) > 0 ? var.public_app_gateway_subnet_name : "${var.name}-app-gw-public"
-  resource_group_name  = var.resource_group_name
-  virtual_network_name = var.virtual_network
-  address_prefixes     = [var.public_app_gateway_address_prefix]
+  name                              = length(var.public_app_gateway_subnet_name) > 0 ? var.public_app_gateway_subnet_name : "${var.name}-app-gw-public"
+  resource_group_name               = var.resource_group_name
+  virtual_network_name              = var.virtual_network
+  address_prefixes                  = [var.public_app_gateway_address_prefix]
+  private_endpoint_network_policies = var.private_endpoint_network_policies
 }
 
 # The public application gateway public IP.

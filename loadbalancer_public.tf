@@ -229,6 +229,12 @@ resource "azurerm_application_gateway" "public" {
     }
   }
 
+  # SSL policy for the public application gateway
+  ssl_policy {
+    policy_type = var.ssl_policy_type
+    policy_name = var.ssl_policy_name
+  }
+
   tags = var.tags
 
   depends_on = [

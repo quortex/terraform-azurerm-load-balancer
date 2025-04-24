@@ -227,6 +227,12 @@ resource "azurerm_application_gateway" "private" {
     }
   }
 
+  # SSL policy for the private application gateway
+  ssl_policy {
+    policy_type = var.ssl_policy_type
+    policy_name = var.ssl_policy_name
+  }
+
   tags = var.tags
 
   depends_on = [

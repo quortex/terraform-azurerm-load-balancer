@@ -1,0 +1,43 @@
+name: Checks
+
+on:
+  push:
+
+env:
+  TF_VERSION: "1.10.0"
+  TFLINT_VERSION: "0.56.0"
+  TFDOCS_VERSION: "0.20.0"
+  PYTHON_VERSION: "3.13"
+
+jobs:
+  precommit:
+    name: Run precommit-hooks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v2
+        name: Setup terraform
+        with:
+          terraform_version: ~> ${{ env.TF_VERSION }}
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v4
+        with:
+          tflint_version: v${{ env.TFLINT_VERSION }}
+
+      - name: Setup terraform-docs
+        working-directory: ${{ runner.temp }}
+        run: |
+          curl -sSLo ./terraform-docs.tar.gz https://terraform-docs.io/dl/v${TFDOCS_VERSION}/terraform-docs-v${TFDOCS_VERSION}-$(uname)-amd64.tar.gz
+          tar -xzf terraform-docs.tar.gz
+          chmod +x terraform-docs
+          sudo mv terraform-docs /usr/bin/terraform-docs
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - uses: pre-commit/action@v3.0.1

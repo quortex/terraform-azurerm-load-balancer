@@ -407,3 +407,15 @@ variable "private_endpoint_network_policies" {
   description = "Enable or Disable network policies for the private endpoint on the subnet. Possible values are Disabled, Enabled, NetworkSecurityGroupEnabled and RouteTableEnabled. Defaults to Enabled to keep same value as before introducing this paramater"
   default     = "Enabled"
 }
+
+variable "ssl_policy_name" {
+  type        = string
+  description = "(Optional) The Name of the Policy e.g. AppGwSslPolicy20220101. Required if policy_type is set to Predefined. Possible values can change over time and are published here"
+  default     = "AppGwSslPolicy20220101"
+}
+
+variable "ssl_policy_type" {
+  type        = string
+  description = "(Optional) The Type of the Policy. Possible values are Predefined, Custom and CustomV2"
+  default     = "Predefined"
+}

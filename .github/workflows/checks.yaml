@@ -17,7 +17,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - uses: hashicorp/setup-terraform@v2
+      - uses: hashicorp/setup-terraform@v3
         name: Setup terraform
         with:
           terraform_version: ~> ${{ env.TF_VERSION }}
